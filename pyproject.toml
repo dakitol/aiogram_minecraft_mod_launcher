@@ -1,0 +1,11 @@
+[project]
+name = "aiogram-minecraft-mod-launcher"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiogram>=3.22.0",
+    "environs>=14.3.0",
+    "scrapling>=0.3.1",
+]
