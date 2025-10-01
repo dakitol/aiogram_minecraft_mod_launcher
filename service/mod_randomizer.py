@@ -1,15 +1,15 @@
-import httpx, asyncio
+import httpx
 import logging
 from dataclasses import dataclass
 from random import randint
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level="INFO", format="%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
 
 @dataclass
 class MinecraftMod:
     name: str
     icon_url: str
+    modrinth_url: str
 
 async def get_random_mod(gamecores: list[str], version: str) -> MinecraftMod:
     cores = ",".join( f'"categories:{core}"' for core in gamecores)
@@ -34,16 +34,11 @@ async def get_random_mod(gamecores: list[str], version: str) -> MinecraftMod:
 
             return MinecraftMod(
                 name=mod_data["hits"][0]["title"],
-                icon_url=mod_data["hits"][0]["icon_url"]
+                icon_url=mod_data["hits"][0]["icon_url"],
+                modrinth_url="https://modrinth.com/mod/"+mod_data["hits"][0]["slug"]+"#download"
             )
 
         except httpx.HTTPError as e:
             logger.error(f"Ошибка HTTP: {e}")
         except Exception as e:
             logger.error(f"Произошла ошибка: {e}")
-
-
-async def main():
-    mod = await get_random_mod(["forge", "neoforge"], "1.21.1")
-    print(mod)
-asyncio.run(main())
